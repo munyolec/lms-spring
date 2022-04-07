@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Library Management System</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+</head>
+<body>
+<div class = "container my-2" align="center">
+
+    <h1> Member List</h1>
+    <a th:href = "@{/newMemberForm}">Add Member</a>
+    <table border="1" class="table table-striped table-responsive-md">
+        <thead>
+            <tr>
+                <th>Member Name</th>
+                <th>Has Overdue</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="member: ${listMembers}">
+                <td th:text="${member.name}"></td>
+                <td th:text="${member.hasOverdue}"></td>
+            </tr>
+        </tbody>
+
+    </table>
+</div>
+
+</body>
+<div classalign="center">
+</html>
