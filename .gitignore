@@ -31,3 +31,9 @@ build/
 
 ### VS Code ###
 .vscode/
+
+src/main/java/com/example/lms/Book/BookController.java
+src/main/java/com/example/lms/Book/BookService.java
+
+src/main/java/com/example/lms/Member/MemberController.javaController.java
+src/main/java/com/example/lms/Member/MemberService.java

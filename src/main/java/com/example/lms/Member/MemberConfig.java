@@ -23,7 +23,7 @@ public class MemberConfig {
 
             Member two = new Member(
 
-                    "Book Two"
+                    "Member Two"
             );
             repository.saveAll(List.of(one, two));
         };

@@ -1,9 +1,14 @@
 package com.example.lms.Member;
-
 import com.example.lms.Book.Book;
+import com.example.lms.Book.BookRepository;
+
+import com.example.lms.Librarian.LibrarianRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.List;
+
+import javax.transaction.Transactional;
+import java.time.LocalDate;
+import java.util.Collections;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -11,33 +16,15 @@ import java.util.Optional;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final BookRepository bookRepository;
+    private final LibrarianRepository librarianRepository;
 
     @Autowired
-    public MemberService(MemberRepository memberRepository) {
+    public MemberService(MemberRepository memberRepository, BookRepository bookRepository,
+                         LibrarianRepository librarianRepository) {
         this.memberRepository = memberRepository;
-    }
-
-    public List<Member> getMembers() {
-        return memberRepository.findAll();
-
-    }
-
-    public void addMember(Member member) {
-        Optional<Member> memberOptional =
-                memberRepository.findMemberById(member.getId());
-        if(memberOptional.isPresent()) {
-            throw new IllegalStateException("id taken");
-        }
-        memberRepository.save(member);
-    }
-
-    public void deleteMember(Integer memberId) {
-        boolean exists = memberRepository.existsById(memberId);
-        if(!exists) {
-            throw new IllegalStateException("member with id " +
-                    memberId + " does not exist");
-        }
-        memberRepository.deleteById(memberId);
+        this.bookRepository = bookRepository;
+        this.librarianRepository = librarianRepository;
     }
 
     public void updateMember(Integer memberId, String name) {
@@ -45,9 +32,10 @@ public class MemberService {
                 orElseThrow(() -> new IllegalStateException(
                         "member with id " + memberId + " does not exist"
                 ));
-        if(name != null && name.length() > 0
+        if (name != null && name.length() > 0
                 && !Objects.equals(member.getName(), name)) {
             member.setName(name);
         }
     }
 }
+

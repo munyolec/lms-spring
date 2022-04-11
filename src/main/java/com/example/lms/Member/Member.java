@@ -19,24 +19,21 @@ public class Member {
             strategy = GenerationType.SEQUENCE,
             generator = "member_sequence"
     )
-    private int id;
+    private Integer id;
     private String name;
 
     @OneToMany(targetEntity = Book.class)
-    private List<String> booksBorrowedTitle;
-
-    @OneToMany(targetEntity = Book.class)
     private List<Book> booksBorrowed;
+
 
     private boolean hasOverDue;
 
     public Member() {
     }
 
-    public Member(int id, String name) {
+    public Member(Integer id, String name) {
         this.id = id;
         this.name = name;
-        this.booksBorrowedTitle = new ArrayList<String>();
         this.booksBorrowed = new ArrayList<Book>();
         this.hasOverDue = false;
 
@@ -44,17 +41,16 @@ public class Member {
 
     public Member(String name) {
         this.name = name;
-        this.booksBorrowedTitle = new ArrayList<String>();
         this.booksBorrowed = new ArrayList<Book>();
         this.hasOverDue = false;
 
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -66,20 +62,12 @@ public class Member {
         this.name = name;
     }
 
-    public List<String> getBooksBorrowedTitle() {
-        return booksBorrowedTitle;
-    }
-
-    public void setBooksBorrowedTitle(List<String> booksBorrowedTitle) {
-        this.booksBorrowedTitle = booksBorrowedTitle;
-    }
-
-    public List<Book> getBooksBorrowed() {
+    public List<Book> getBooksBorrowedTitle() {
         return booksBorrowed;
     }
 
-    public void setBooksBorrowed(List<Book> booksBorrowed) {
-        this.booksBorrowed = booksBorrowed;
+    public void setBooksBorrowedTitle(Book booksBorrowedTitle) {
+        this.booksBorrowed.add(booksBorrowedTitle);
     }
 
     public boolean isHasOverDue() {
@@ -95,18 +83,10 @@ public class Member {
         return "Member{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", booksBorrowedTitle=" + booksBorrowedTitle +
-                ", booksBorrowed=" + booksBorrowed +
+                ", booksBorrowedTitle=" + booksBorrowed +
                 ", hasOverDue=" + hasOverDue +
                 '}';
     }
 
-//    @Override
-//    public boolean equals(Object o) {
-//        if (this == o) return true;
-//        if (!(o instanceof Member)) return false;
-//        Member member = (Member) o;
-//        return getId() == member.getId();
-//    }
 
 }

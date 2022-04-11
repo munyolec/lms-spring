@@ -18,7 +18,7 @@ public class Book {
             strategy = GenerationType.SEQUENCE,
             generator = "book_sequence"
     )
-    private int id;
+    public Integer id;
     private String title;
     private boolean borrowedStatus;
     private String borrowerName;
@@ -30,7 +30,7 @@ public class Book {
 
     }
 
-    public Book(int id, String title) {
+    public Book(Integer id, String title) {
         this.id = id;
         this.title = title;
         this.borrowedStatus = false;
@@ -49,11 +49,11 @@ public class Book {
         this.isOverDue = false;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

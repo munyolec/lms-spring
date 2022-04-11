@@ -13,19 +13,15 @@ import java.util.List;
 public class LibrarianConfig {
     @Bean
     CommandLineRunner commandLineRunnerLibrarian(
-            LibrarianRepository librarianRepository,
-            BookRepository repository
+            LibrarianRepository librarianRepository
+
     ){
         return args -> {
-            Book one = new Book(
-                    "Book One"
+            Librarian one = new Librarian(
+                    "Librarian"
             );
 
-            Book two = new Book(
-                    "Book Two"
-            );
-
-            repository.saveAll(List.of(one, two));
+            librarianRepository.saveAll(List.of(one));
         };
     }
 }
