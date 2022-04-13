@@ -1,12 +1,18 @@
 package com.example.lms.Member;
 
 import com.example.lms.Book.Book;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+@Data
 @Entity
 @Table
 public class Member {
@@ -20,11 +26,15 @@ public class Member {
             generator = "member_sequence"
     )
     private Integer id;
+
+    @NotNull
+    @Size(min=3, max=20)
     private String name;
 
-    @OneToMany(targetEntity = Book.class)
-    private List<Book> booksBorrowed;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "memberBorrower")
+    private List<Book> booksBorrowed;
 
     private boolean hasOverDue;
 
@@ -46,37 +56,11 @@ public class Member {
 
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public List<Book> getBooksBorrowedTitle() {
-        return booksBorrowed;
-    }
-
-    public void setBooksBorrowedTitle(Book booksBorrowedTitle) {
+    public void setBooksBorrowed(Book booksBorrowedTitle) {
         this.booksBorrowed.add(booksBorrowedTitle);
     }
 
-    public boolean isHasOverDue() {
-        return hasOverDue;
-    }
 
-    public void setHasOverDue(boolean hasOverDue) {
-        this.hasOverDue = hasOverDue;
-    }
 
     @Override
     public String toString() {

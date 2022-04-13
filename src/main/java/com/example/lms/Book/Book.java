@@ -1,11 +1,16 @@
 package com.example.lms.Book;
 
+import com.example.lms.Member.Member;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Data;
 
 import javax.persistence.*;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
+@Data
 @Entity
 @Table
 public class Book {
@@ -19,9 +24,16 @@ public class Book {
             generator = "book_sequence"
     )
     public Integer id;
+
+    @NotNull
+    @Size(min=3)
     private String title;
+    
     private boolean borrowedStatus;
-    private String borrowerName;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "borrower_id", referencedColumnName = "id")
+    private Member memberBorrower;
     private LocalDate borrowedDate;
     private LocalDate returnDate;
     private Boolean isOverDue;
@@ -34,7 +46,8 @@ public class Book {
         this.id = id;
         this.title = title;
         this.borrowedStatus = false;
-        this.borrowerName = null;
+//        this.borrowerName = null;
+        this.memberBorrower = null;
         this.borrowedDate = null;
         this.returnDate = null;
         this.isOverDue = false;
@@ -43,66 +56,10 @@ public class Book {
     public Book(String title) {
         this.title = title;
         this.borrowedStatus = false;
-        this.borrowerName = null;
+//        this.borrowerName = null;
         this.borrowedDate = null;
         this.returnDate = null;
         this.isOverDue = false;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public boolean isBorrowedStatus() {
-        return borrowedStatus;
-    }
-
-    public void setBorrowedStatus(boolean borrowedStatus) {
-        this.borrowedStatus = borrowedStatus;
-    }
-
-    public String getBorrowerName() {
-        return borrowerName;
-    }
-
-    public void setBorrowerName(String borrowerName) {
-        this.borrowerName = borrowerName;
-    }
-
-    public LocalDate getBorrowedDate() {
-        return borrowedDate;
-    }
-
-    public void setBorrowedDate(LocalDate borrowedDate) {
-        this.borrowedDate = borrowedDate;
-    }
-
-    public LocalDate getReturnDate() {
-        return returnDate;
-    }
-
-    public void setReturnDate(LocalDate returnDate) {
-        this.returnDate = returnDate;
-    }
-
-    public Boolean getOverDue() {
-        return isOverDue;
-    }
-
-    public void setOverDue(Boolean overDue) {
-        isOverDue = overDue;
     }
 
     @Override
@@ -111,7 +68,6 @@ public class Book {
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", borrowedStatus=" + borrowedStatus +
-                ", borrowerName='" + borrowerName + '\'' +
                 ", borrowedDate=" + borrowedDate +
                 ", returnDate=" + returnDate +
                 ", isOverDue=" + isOverDue +

@@ -6,6 +6,7 @@ import com.example.lms.Member.Member;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -27,7 +28,7 @@ public class LibrarianController {
     }
 
     @PostMapping("/books")
-    public void addNewBook(@RequestBody  Book book) {
+    public void addNewBook(@Valid @RequestBody  Book book) {
         librarianService.addBook(book);
     }
 
@@ -42,7 +43,7 @@ public class LibrarianController {
     }
 
     @PostMapping("/members/add")
-    public void addMember(@RequestBody Member member) {
+    public void addMember(@Valid @RequestBody Member member) {
         librarianService.addMember(member);
     }
 
@@ -56,7 +57,7 @@ public class LibrarianController {
         librarianService.deleteMember(memberId);
     }
 
-    @PutMapping(path = "/member/borrow/{memberId}/{bookId}")
+    @PutMapping(path = "/member/{memberId}/borrow/{bookId}")
     public void issueBook(
             @PathVariable("memberId") Integer member,
             @PathVariable("bookId") Integer book

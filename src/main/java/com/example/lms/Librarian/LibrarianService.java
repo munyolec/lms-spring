@@ -16,7 +16,6 @@ import java.util.Optional;
 
 @Service
 public class LibrarianService {
-
     private final LibrarianRepository librarianRepository;
     private final BookRepository bookRepository;
     private final MemberRepository memberRepository;
@@ -37,11 +36,6 @@ public class LibrarianService {
     }
 
     public void addBook(Book book) {
-        Optional<Book> bookOptional =
-                bookRepository.findBookById(book.getId());
-        if(bookOptional.isPresent()) {
-            throw new IllegalStateException("id taken");
-        }
         bookRepository.save(book);
     }
 
@@ -68,11 +62,7 @@ public class LibrarianService {
     }
 
     public void addMember(Member member) {
-        Optional<Member> memberOptional =
-                memberRepository.findMemberById(member.getId());
-        if(memberOptional.isPresent()) {
-            throw new IllegalStateException("id taken");
-        }
+
         memberRepository.save(member);
     }
 
@@ -85,7 +75,6 @@ public class LibrarianService {
         memberRepository.deleteById(memberId);
     }
 
-
     @Transactional
     public void issueBook(Member member, Book book) {
     Optional<Book> bookOptional =
@@ -93,26 +82,31 @@ public class LibrarianService {
     Optional<Member> memberOptional =
             memberRepository.findById(member.getId());
 
-    if(bookOptional.isPresent() && memberOptional.isPresent()) {
-        if(book.isBorrowedStatus() == false){
-            book = bookOptional.get();
-            member= memberOptional.get();
-            //book.setTitle(bookOptional.get().getTitle());
-            book.setBorrowedStatus(true);
-            book.setBorrowerName(memberOptional.get().getName());
-            book.setBorrowedDate(LocalDate.now());
-            book.setReturnDate((LocalDate.now().plusWeeks(1)));
-            member.setBooksBorrowedTitle(book);
+    if(member.isHasOverDue() == false){
+        if(bookOptional.isPresent() && memberOptional.isPresent()) {
+            if(book.isBorrowedStatus() == false){
+                book = bookOptional.get();
+                member= memberOptional.get();
+                book.setBorrowedStatus(true);
+                book.setMemberBorrower(member);
+                book.setBorrowedDate(LocalDate.now());
+                book.setReturnDate((LocalDate.now().plusWeeks(1)));
+                member.setBooksBorrowed(book);
 
-        }
-        else{
-            throw new IllegalStateException("book already borrowed");
-    }
-
-    }else
+            }
+            else{
+                throw new IllegalStateException("book already borrowed");
+            }
+        }else
         {
             throw new IllegalStateException();
         }
+    } else{
+        throw new IllegalStateException("You have a book that is overdue");
+    }
+
+    bookRepository.save(book);
+    memberRepository.save(member);
 }
     public Collection<Book> getTotalBooksOut(){
         return bookRepository.findBorrowedBook();

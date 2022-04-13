@@ -2,11 +2,13 @@ package com.example.lms.Librarian;
 
 import com.example.lms.Book.Book;
 import com.example.lms.Member.Member;
+import lombok.Data;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Data
 @Entity
 @Table
 public class Librarian {
@@ -46,37 +48,6 @@ public class Librarian {
         this.books = new ArrayList<Book>();
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getLibName() {
-        return libName;
-    }
-
-    public void setLibName(String libName) {
-        this.libName = libName;
-    }
-
-    public static List<Member> getMembers() {
-        return members;
-    }
-
-    public static void setMembers(List<Member> members) {
-        Librarian.members = members;
-    }
-
-    public static List<Book> getBooks() {
-        return books;
-    }
-
-    public static void setBooks(List<Book> books) {
-        Librarian.books = books;
-    }
 
 
     @Override
