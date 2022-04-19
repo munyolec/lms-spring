@@ -63,15 +63,22 @@ public class LibrarianController {
             @PathVariable("bookId") Integer book
           ){
         Member mem = new Member();
-        mem.setId(member);
+        mem.setMemberId(member);
         Book bk = new Book();
-        bk.setId(book);
+        bk.setBookId(book);
         librarianService.issueBook(mem,bk);
     }
-
     @GetMapping(path="/books/borrowed")
     public Collection<Book> getTotalBooksOut() {
         return librarianService.getTotalBooksOut();
+    }
+
+    @PutMapping(path="/edit/{bookId}")
+    public void updateBookCount(
+            @PathVariable("bookId") Integer bookId,
+            @RequestParam(required = false) Integer quantity
+    ){
+        librarianService.updateBookCount(bookId, quantity);
     }
 
 

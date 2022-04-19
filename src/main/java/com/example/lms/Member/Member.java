@@ -25,7 +25,7 @@ public class Member {
             strategy = GenerationType.SEQUENCE,
             generator = "member_sequence"
     )
-    private Integer id;
+    private Integer memberId;
 
     @NotNull
     @Size(min=3, max=20)
@@ -33,7 +33,7 @@ public class Member {
 
 
     @JsonIgnore
-    @OneToMany(mappedBy = "memberBorrower")
+    @ManyToMany(mappedBy = "membersWithCopy")
     private List<Book> booksBorrowed;
 
     private boolean hasOverDue;
@@ -42,7 +42,7 @@ public class Member {
     }
 
     public Member(Integer id, String name) {
-        this.id = id;
+        this.memberId = id;
         this.name = name;
         this.booksBorrowed = new ArrayList<Book>();
         this.hasOverDue = false;
@@ -65,7 +65,7 @@ public class Member {
     @Override
     public String toString() {
         return "Member{" +
-                "id=" + id +
+                "id=" + memberId +
                 ", name='" + name + '\'' +
                 ", booksBorrowedTitle=" + booksBorrowed +
                 ", hasOverDue=" + hasOverDue +

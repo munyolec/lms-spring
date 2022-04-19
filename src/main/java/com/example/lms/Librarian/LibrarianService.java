@@ -12,6 +12,7 @@ import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -78,18 +79,19 @@ public class LibrarianService {
     @Transactional
     public void issueBook(Member member, Book book) {
     Optional<Book> bookOptional =
-            bookRepository.findBookById(book.getId());
+            bookRepository.findBookById(book.getBookId());
     Optional<Member> memberOptional =
-            memberRepository.findById(member.getId());
+            memberRepository.findById(member.getMemberId());
 
     if(member.isHasOverDue() == false){
-        if(bookOptional.isPresent() && memberOptional.isPresent()) {
+        if(bookOptional.isPresent() && bookOptional.get().getQuantity() > 0 && memberOptional.isPresent()) {
             if(book.isBorrowedStatus() == false){
                 book = bookOptional.get();
                 member= memberOptional.get();
                 book.setBorrowedStatus(true);
-                book.setMemberBorrower(member);
+                book.setMembersWithCopy(member);
                 book.setBorrowedDate(LocalDate.now());
+                book.setQuantity( book.getQuantity()-1 );
                 book.setReturnDate((LocalDate.now().plusWeeks(1)));
                 member.setBooksBorrowed(book);
 
@@ -99,16 +101,29 @@ public class LibrarianService {
             }
         }else
         {
-            throw new IllegalStateException();
+            throw new IllegalStateException("Book or Member not available");
         }
     } else{
         throw new IllegalStateException("You have a book that is overdue");
     }
+
 
     bookRepository.save(book);
     memberRepository.save(member);
 }
     public Collection<Book> getTotalBooksOut(){
         return bookRepository.findBorrowedBook();
+    }
+
+    @Transactional
+    public void updateBookCount(Integer bookId, Integer quantity) {
+       Book book = bookRepository.findById(bookId).orElseThrow(
+               ()->new IllegalStateException("book with id" +bookId + "does not exist")
+       );
+
+       if(quantity !=null && !Objects.equals(book.getQuantity(), quantity)){
+           book.setQuantity(quantity);
+       }
+
     }
 }
