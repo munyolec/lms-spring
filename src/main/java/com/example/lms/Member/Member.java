@@ -7,10 +7,8 @@ import lombok.Data;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Data
 @Entity
@@ -38,6 +36,7 @@ public class Member {
 
     private boolean hasOverDue;
 
+
     public Member() {
     }
 
@@ -46,21 +45,25 @@ public class Member {
         this.name = name;
         this.booksBorrowed = new ArrayList<Book>();
         this.hasOverDue = false;
-
     }
 
     public Member(String name) {
         this.name = name;
-        this.booksBorrowed = new ArrayList<Book>();
+        this.booksBorrowed = new ArrayList<>();
         this.hasOverDue = false;
-
     }
 
     public void setBooksBorrowed(Book booksBorrowedTitle) {
         this.booksBorrowed.add(booksBorrowedTitle);
     }
 
-
+    public List<String> getTitles() {
+        List<String> titles = new ArrayList<>();
+        for (Book book :booksBorrowed){
+            titles.add(book.getTitle());
+        }
+        return titles;
+    }
 
     @Override
     public String toString() {

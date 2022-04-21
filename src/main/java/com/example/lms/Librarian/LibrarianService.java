@@ -2,18 +2,18 @@ package com.example.lms.Librarian;
 
 
 import com.example.lms.Book.Book;
+import com.example.lms.Book.BookInfoDTO;
 import com.example.lms.Book.BookRepository;
 import com.example.lms.Member.Member;
+import com.example.lms.Member.MemberBookInfoDTO;
 import com.example.lms.Member.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class LibrarianService {
@@ -32,8 +32,20 @@ public class LibrarianService {
     /**
      * Book Logic
      */
-    public List<Book> getBooks() {
-        return bookRepository.findAll();
+    public List<BookInfoDTO> getBooks() {
+        return bookRepository.findAll()
+                .stream()
+                .map(this::convertBookEntityToDto)
+                .collect(Collectors.toList());
+    }
+
+
+    private BookInfoDTO convertBookEntityToDto(Book book){
+        BookInfoDTO bookInfoDto = new BookInfoDTO();
+        bookInfoDto.setBookId(book.getBookId());
+        bookInfoDto.setBookName(book.getTitle());
+        bookInfoDto.setQuantity(book.getQuantity());
+        return bookInfoDto;
     }
 
     public void addBook(Book book) {
@@ -54,8 +66,20 @@ public class LibrarianService {
      * Member Logic
 
      */
-    public List<Member> getMembers() {
-        return memberRepository.findAll();
+    public List<MemberBookInfoDTO> getMembers() {
+        return memberRepository.findAll()
+                .stream()
+                .map(this::convertEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    private MemberBookInfoDTO convertEntityToDTO(Member member) {
+        MemberBookInfoDTO memberBookInfoDTO = new MemberBookInfoDTO();
+        memberBookInfoDTO.setMemberId(member.getMemberId());
+        memberBookInfoDTO.setName(member.getName());
+        memberBookInfoDTO.setBookName(String.valueOf(member.getTitles()));
+        return memberBookInfoDTO;
+
     }
 
     public Optional<Member> findMember(Integer memberId) {
@@ -63,7 +87,6 @@ public class LibrarianService {
     }
 
     public void addMember(Member member) {
-
         memberRepository.save(member);
     }
 

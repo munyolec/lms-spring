@@ -38,7 +38,6 @@ public class Book {
             name="Member_Book_Info",
             joinColumns = @JoinColumn(name="bookId"),
             inverseJoinColumns = @JoinColumn(name="member_id")
-
     )
     @JsonIgnore
     private List<Member> membersWithCopy;
@@ -51,7 +50,7 @@ public class Book {
 
     public Book(String title) {
         this.title = title;
-        this.quantity = 0;
+        this.quantity = 5;
         this.borrowedStatus = borrowedStatus;
         this.membersWithCopy = new ArrayList<Member>();
         this.borrowedDate = borrowedDate;

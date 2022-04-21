@@ -2,7 +2,9 @@ package com.example.lms.Librarian;
 
 
 import com.example.lms.Book.Book;
+import com.example.lms.Book.BookInfoDTO;
 import com.example.lms.Member.Member;
+import com.example.lms.Member.MemberBookInfoDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +25,7 @@ public class LibrarianController {
     }
 
     @GetMapping("/books")
-    public List<Book> getBooks() {
+    public List<BookInfoDTO> getBooks() {
         return librarianService.getBooks();
     }
 
@@ -38,7 +40,7 @@ public class LibrarianController {
     }
 
     @GetMapping("/members")
-    public List<Member> getMembers() {
+    public List<MemberBookInfoDTO> getMembers() {
         return librarianService.getMembers();
     }
 

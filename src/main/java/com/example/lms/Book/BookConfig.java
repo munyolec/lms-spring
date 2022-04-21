@@ -17,6 +17,7 @@ public class BookConfig {
         return args -> {
                    Book one = new Book(
                             "Book One"
+
                     );
 
                     Book two = new Book(
